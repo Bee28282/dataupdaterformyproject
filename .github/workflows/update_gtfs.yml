@@ -25,6 +25,12 @@ jobs:
     - name: Run the GTFS update script
       run: |
         python main.py  # Runs your Python script
+      env:
+        PYTHONPATH: ${{ github.workspace }}  # Ensure script runs in the correct directory
+
+    - name: List files
+      run: |
+        ls -l  # Lists files to check if the data is processed correctly
 
     - name: Commit and push changes
       run: |
