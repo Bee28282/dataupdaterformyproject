@@ -1,27 +1,22 @@
 import requests
 import zipfile
 import os
-import io
 
-GTFS_URL = "https://ssl.renfe.com/gtransit/Fichero_AV_LD/google_transit.zip"  # Replace with actual GTFS dataset URL
-OUTPUT_DIR = "data"  # Directory to save the unzipped files
+# URL of the GTFS zip file
+url = 'https://ssl.renfe.com/gtransit/Fichero_AV_LD/google_transit.zip'
 
-def download_gtfs(url):
-    print(f"Downloading GTFS data from {url}...")
-    response = requests.get(url)
-    response.raise_for_status()  # Ensure we notice bad responses
-    return response.content
+# Path to save the downloaded zip file
+zip_path = 'google_transit.zip'
+extract_path = 'google_transit_data'
 
-def unzip_gtfs(data, output_dir):
-    print(f"Unzipping GTFS data to {output_dir}...")
-    with zipfile.ZipFile(io.BytesIO(data)) as z:
-        z.extractall(output_dir)
-    print(f"Files extracted to {output_dir}")
+# Download the zip file
+response = requests.get(url)
+with open(zip_path, 'wb') as file:
+    file.write(response.content)
 
-def main():
-    data = download_gtfs(GTFS_URL)
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    unzip_gtfs(data, OUTPUT_DIR)
+# Extract the zip file
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_path)
 
-if __name__ == "__main__":
-    main()
+# Clean up the zip file
+os.remove(zip_path)
