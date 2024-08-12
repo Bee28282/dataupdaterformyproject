@@ -36,10 +36,14 @@ jobs:
       run: |
         pwd  # Prints the current working directory
 
+    - name: Check Git status
+      run: |
+        git status  # Check the status of the repository
+
     - name: Commit and push changes
       run: |
-        git config --local user.email "actions@github.com"  # Configures git
-        git config --local user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"  # Configures git globally
+        git config --global user.name "GitHub Actions"
         git add .
         git commit -m "Update GTFS data" || echo "No changes to commit"  # Commits the updated data
         git push  # Pushes changes to the repository
