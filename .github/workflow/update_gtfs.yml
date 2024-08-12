@@ -1,0 +1,35 @@
+name: Update GTFS Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+  workflow_dispatch:  # Allows manual trigger of the workflow
+
+jobs:
+  update:
+    runs-on: ubuntu-latest  # Uses the latest version of Ubuntu
+
+    steps:
+    - name: Checkout repository content
+      uses: actions/checkout@v2  # Checks out the repository content
+
+    - name: Set up Python
+      uses: actions/setup-python@v2  # Sets up Python
+      with:
+        python-version: '3.x'  # Specify Python version (e.g., 3.9)
+
+    - name: Install dependencies
+      run: |
+        pip install requests  # Installs the required Python packages
+
+    - name: Run the GTFS update script
+      run: |
+        python main.py  # Runs your Python script
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "actions@github.com"  # Configures git
+        git config --local user.name "GitHub Actions"
+        git add .
+        git commit -m "Update GTFS data"  # Commits the updated data
+        git push  # Pushes changes to the repository
